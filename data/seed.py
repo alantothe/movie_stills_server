@@ -11,14 +11,25 @@ json_file_path = os.path.join(current_dir, 'master.json')
 
 seed_data = None
 
-# Read and print the JSON file
-try:
-    with open(json_file_path, 'r') as file:
-        seed_data = json.load(file)
-    print(json.dumps(seed_data, indent=2))
-except FileNotFoundError:
-    print(f"Error: The file {json_file_path} was not found.")
-except json.JSONDecodeError:
-    print(f"Error: The file {json_file_path} is not valid JSON.")
+class Command(BaseCommand):
+    help = 'Seed the database with movie data'
 
+    def handle(self, *args, **kwargs):
+        # read the json file
+        with open(json_file_path, 'r') as file:
+            seed_data = json.load(file)
+
+        for movie_data in seed_data:
+            movie = Movie.objects.create(
+                 imdb_id=movie_data['imdb_id'],
+                title=movie_data['title'],
+                date_released=movie_data['date_released'],
+                genres=movie_data['genre'],
+                rating=movie_data['rating'],
+                directors=movie_data['director'],
+                cinematographers=movie_data['cinematographer'],
+                countries=movie_data['country'],
+                imdb_rating=movie_data['imdb_rating'],
+            )
+            
 
