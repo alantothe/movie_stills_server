@@ -4,6 +4,9 @@ venv/
 env/
 *.pyc
 
+# macOS
+.DS_Store
+
 # Django
 *.log
 *.pot
